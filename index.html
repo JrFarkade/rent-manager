@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RentManage - Smart Rental Management System</title>
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-saas">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Floating UI Concept Theme Switcher -->
+  <div class="ui-switcher-container" id="uiSwitcherContainer">
+    <button class="ui-switcher-btn" id="uiSwitcherBtn" aria-label="Toggle UI Theme menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"/><path d="M12 6V12L16 14"/></svg>
+      <span>UI Theme</span>
+    </button>
+    <div class="ui-switcher-menu" id="uiSwitcherMenu">
+      <div class="ui-switcher-header">Select UI Concept</div>
+      <button class="ui-switcher-option active" data-theme="saas">
+        <span class="theme-dot saas-dot"></span>
+        <div class="theme-details">
+          <strong>SaaS Dashboard</strong>
+          <small>Professional & structured</small>
+        </div>
+      </button>
+      <button class="ui-switcher-option" data-theme="cards">
+        <span class="theme-dot cards-dot"></span>
+        <div class="theme-details">
+          <strong>Modern Card UI</strong>
+          <small>Spacious & rounded</small>
+        </div>
+      </button>
+      <button class="ui-switcher-option" data-theme="dark">
+        <span class="theme-dot dark-dot"></span>
+        <div class="theme-details">
+          <strong>Minimal Dark</strong>
+          <small>Glassmorphism & neon</small>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN APP CONTAINER -->
+  <div id="app">
+    <!-- The login page structure is rendered here. 
+         JavaScript will dynamically replace this entire container with dashboards when authorized, 
+         and restore it upon logout, ensuring no hidden elements exist in raw source. -->
+    
+    <div class="login-wrapper">
+      <!-- LEFT PANEL: BRAND & GRAPHIC -->
+      <div class="login-brand-side">
+        <div class="login-logo-container">
+          <svg class="brand-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <div class="brand-meta">
+            <span class="brand-title">RentManage</span>
+            <span class="brand-subtitle">Smart Rental Management System</span>
+          </div>
+        </div>
+
+        <div class="login-brand-desc">
+          <h1>Welcome <span class="text-highlight-blue">Back!</span></h1>
+          <p>Please login to continue to your account</p>
+        </div>
+
+        <div class="login-illustration">
+          <div class="building-card">
+            <!-- Modern flat-vector abstract apartment building -->
+            <svg viewBox="0 0 100 120" class="building-svg">
+              <rect x="15" y="10" width="70" height="110" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+              <!-- Structural columns -->
+              <rect x="25" y="20" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
+              <rect x="44" y="20" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
+              <rect x="63" y="20" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
+
+              <rect x="25" y="45" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
+              <rect x="44" y="45" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
+              <rect x="63" y="45" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
+
+              <rect x="25" y="70" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
+              <rect x="44" y="70" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
+              <rect x="63" y="70" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
+
+              <!-- Doorway -->
+              <rect x="40" y="98" width="20" height="22" rx="2" fill="#1e293b"/>
+            </svg>
+            <div class="illustration-badge">
+              <div class="badge-icon-bg">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="badge-text-details">
+                <strong>Secure • Simple • Smart</strong>
+                <span>Managing your property, made easy.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL: INTERACTIVE SIGN-IN CARD -->
+      <div class="login-form-side">
+        <!-- Substate 1: Role Selection Grid -->
+        <div id="login-role-selector" class="login-substate active">
+          <div class="role-selector-card">
+            <h2 class="form-title">Login As</h2>
+            <p class="form-subtitle">Choose your role to continue</p>
+            
+            <div class="role-grid">
+              <!-- Admin Card -->
+              <div class="role-card" onclick="app.showLoginState('admin')">
+                <div class="role-icon-wrapper role-admin-color">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3>Admin</h3>
+                <p>Manage properties, tenants, payments and system settings</p>
+                <button class="role-login-btn btn-admin">Login as Admin &rarr;</button>
+              </div>
+
+              <!-- Tenant Card -->
+              <div class="role-card" onclick="app.showLoginState('tenant')">
+                <div class="role-icon-wrapper role-tenant-color">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <h3>Tenant</h3>
+                <p>View your rent details, make payments and raise complaints</p>
+                <button class="role-login-btn btn-tenant">Login as Tenant &rarr;</button>
+              </div>
+
+              <!-- Owner Card -->
+              <div class="role-card" onclick="app.showLoginState('owner')">
+                <div class="role-icon-wrapper role-owner-color">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                </div>
+                <h3>Owner</h3>
+                <p>Manage your properties, tenants and view reports</p>
+                <button class="role-login-btn btn-owner">Login as Owner &rarr;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Substate 2: Admin/Owner Credentials Form -->
+        <div id="login-credentials-form" class="login-substate">
+          <div class="credentials-card">
+            <button class="back-btn" onclick="app.showLoginState('roles')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back
+            </button>
+            <h2 id="login-form-title" class="form-title">Login</h2>
+            <p id="login-form-subtitle" class="form-subtitle">Enter your account credentials to continue</p>
+            
+            <form id="credentials-form" onsubmit="app.handleLoginSubmit(event)">
+              <input type="hidden" id="login-role-input">
+              
+              <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" required placeholder="Enter username">
+              </div>
+
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Enter password">
+              </div>
+
+              <button type="submit" class="btn-primary w-full" id="login-submit-btn">Login &rarr;</button>
+            </form>
+
+            <div class="register-promo" id="register-promo-box">
+              <p>New Owner? <a href="#" onclick="app.showLoginState('register')">Register Property Owner</a></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Substate 3: Owner Registration Form -->
+        <div id="login-register-owner" class="login-substate">
+          <div class="credentials-card">
+            <button class="back-btn" onclick="app.showLoginState('roles')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back
+            </button>
+            <h2 class="form-title">Owner Registration</h2>
+            <p class="form-subtitle">Join RentManage to manage your properties</p>
+            
+            <form id="owner-register-form" onsubmit="app.handleOwnerRegister(event)">
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="reg-name">Full Name</label>
+                  <input type="text" id="reg-name" required placeholder="Enter Full Name">
+                </div>
+                <div class="form-group">
+                  <label for="reg-phone">Phone Number</label>
+                  <input type="tel" id="reg-phone" required placeholder="Enter Phone Number">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="reg-email">Email Address</label>
+                <input type="email" id="reg-email" required placeholder="Enter Email Address">
+              </div>
+
+              <div class="form-group">
+                <label for="reg-property">Property / Building Name</label>
+                <input type="text" id="reg-property" required placeholder="Enter Property or Building Name">
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="reg-username">Username</label>
+                  <input type="text" id="reg-username" required placeholder="Enter Username">
+                </div>
+                <div class="form-group">
+                  <label for="reg-password">Password</label>
+                  <input type="password" id="reg-password" required placeholder="Enter Password">
+                </div>
+              </div>
+
+              <button type="submit" class="btn-primary w-full">Create Owner Account &amp; Register &rarr;</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Substate 4: Tenant Verification Page (Page 1 requested) -->
+        <div id="login-tenant-verify" class="login-substate">
+          <div class="credentials-card">
+            <button class="back-btn" onclick="app.showLoginState('roles')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back
+            </button>
+            <h2 class="form-title">Tenant Access</h2>
+            <p class="form-subtitle">Enter verification details to retrieve room statements</p>
+            
+            <form onsubmit="app.handleTenantVerify(event)">
+              <div class="form-group">
+                <label for="verify-property-code">Owner Property Code</label>
+                <input type="text" id="verify-property-code" required placeholder="Enter Property Code">
+              </div>
+
+              <div class="form-group">
+                <label for="verify-room-number">Room Access ID / Room Number</label>
+                <input type="text" id="verify-room-number" required placeholder="Enter Room Number">
+              </div>
+
+              <button type="submit" class="btn-primary w-full mt-4 py-3">Verify and Continue &rarr;</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Centered footer on login page -->
+    <footer class="login-footer-text">
+      &copy; 2026 RentManage. All rights reserved.
+    </footer>
+  </div>
+
+  <!-- Core Script File -->
+  <script src="app.js"></script>
+</body>
+</html>
