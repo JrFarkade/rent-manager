@@ -791,6 +791,11 @@
                 <div>Room: <strong id="record-payment-room-num-text"></strong></div>
                 <div>Tenant: <strong id="record-payment-tenant-name-text"></strong></div>
               </div>
+              <div class="reading-info-strip" style="flex-direction:column; gap:4px; align-items:stretch; margin-top:-8px; margin-bottom:16px;">
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem;"><span>Total Bill Amount:</span><strong id="record-payment-total-text">₹0</strong></div>
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem;"><span>Already Paid:</span><strong id="record-payment-paid-text" class="text-success">₹0</strong></div>
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem; border-top:1px dashed var(--color-border); padding-top:4px; margin-top:4px;"><span>Remaining Balance:</span><strong id="record-payment-remaining-text" class="text-primary">₹0</strong></div>
+              </div>
               <div class="form-group">
                 <label>Amount Paid (₹) *</label>
                 <input type="number" id="record-payment-amount" required placeholder="Enter amount paid" min="1">
@@ -1614,9 +1619,14 @@
           <div class="room-pane-layout">
             <div class="calc-card-box">
               <h4 style="margin-bottom:8px; font-size:0.75rem; text-transform:uppercase; color:var(--color-text-muted);">Occupant Info &amp; Actions</h4>
-              <div class="detail-item"><span class="detail-label">Name</span><strong style="font-size:1.1rem; color:var(--color-text-main);">${activeRoom.tenantName}</strong></div>
+              <div class="detail-item"><span class="detail-label">Tenant Name</span><strong style="font-size:1.1rem; color:var(--color-text-main);">${activeRoom.tenantName}</strong></div>
               <div class="detail-item mt-2"><span class="detail-label">Joining Date</span><span>${activeRoom.joiningDate}</span></div>
               <div class="detail-item mt-2"><span class="detail-label">Security Deposit</span><span>₹${(activeRoom.securityDeposit || 0).toLocaleString()}</span></div>
+              
+              <div class="detail-item mt-2 pt-2 border-top"><span class="detail-label">Current Bill</span><strong>₹${ledger.totalOutstanding.toLocaleString()}</strong></div>
+              <div class="detail-item mt-1"><span class="detail-label">Amount Paid</span><strong class="text-success">₹${ledger.totalPaid.toLocaleString()}</strong></div>
+              <div class="detail-item mt-1"><span class="detail-label">Remaining Balance</span><strong class="text-primary">₹${ledger.remainingBalance.toLocaleString()}</strong></div>
+              <div class="detail-item mt-1"><span class="detail-label">Payment Status</span><span class="status-badge status-${ledger.paymentStatus.toLowerCase().replace(' ', '-')}">${ledger.paymentStatus}</span></div>
               
               <div class="mt-4 pt-4 border-top" style="display:flex; flex-direction:column; gap:8px;">
                 <button class="btn-primary w-full" onclick="app.openRecordPaymentModal('${activeRoom.id}')">Record Payment</button>
@@ -1860,10 +1870,17 @@
       const room = this.db.rooms.find(r => r.id === roomId);
       if (!room) return;
 
+      const ledger = this.getRoomLedger(room);
+
       document.getElementById('record-payment-room-id').value = room.id;
       document.getElementById('record-payment-room-num-text').innerText = room.roomNumber;
       document.getElementById('record-payment-tenant-name-text').innerText = room.tenantName;
-      document.getElementById('record-payment-amount').value = '';
+      
+      document.getElementById('record-payment-total-text').innerText = '₹' + ledger.totalOutstanding.toLocaleString();
+      document.getElementById('record-payment-paid-text').innerText = '₹' + ledger.totalPaid.toLocaleString();
+      document.getElementById('record-payment-remaining-text').innerText = '₹' + ledger.remainingBalance.toLocaleString();
+      
+      document.getElementById('record-payment-amount').value = ledger.remainingBalance;
       document.getElementById('record-payment-date').value = new Date().toISOString().split('T')[0];
 
       this.openModal('record-payment-modal');
@@ -1969,9 +1986,39 @@
       }
     }
 
+    suggestNextRoomNumber() {
+      const owner = this.currentUser;
+      if (!owner) return '';
+      const ownerRooms = this.db.rooms.filter(r => r.ownerId === owner.id);
+      if (ownerRooms.length === 0) return '01';
+      
+      let maxNum = -1;
+      let paddingLength = 2;
+      
+      ownerRooms.forEach(r => {
+        const val = parseInt(r.roomNumber);
+        if (!isNaN(val)) {
+          if (val > maxNum) {
+            maxNum = val;
+            paddingLength = r.roomNumber.length;
+          }
+        }
+      });
+      
+      if (maxNum === -1) return '01';
+      const nextNum = maxNum + 1;
+      return String(nextNum).padStart(paddingLength, '0');
+    }
+
     openModal(id) {
       const modal = document.getElementById(id);
-      if (modal) modal.classList.add('active');
+      if (modal) {
+        modal.classList.add('active');
+        if (id === 'add-room-modal') {
+          const suggestion = this.suggestNextRoomNumber();
+          document.getElementById('room-num').value = suggestion;
+        }
+      }
     }
 
     closeModal(id) {
