@@ -65,15 +65,6 @@ Since the app is entirely client-side, setup is instant.
      python -m http.server 8080
      ```
      Navigate to `http://localhost:8080`.
-
----
-
-## 🔑 Demo Account Credentials
-- **Admin Username**: `@jrfarkade`
-- **Admin Password**: `@Sahil26`
-- **Owner / Tenant flow**: Register a new landlord account directly from the owner login panel, copy the generated code, and verify tenant room dashboards immediately.
-
----
-
+     
 *Designed and engineered as a personal frontend portfolio project.*
  
