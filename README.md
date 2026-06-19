@@ -54,7 +54,7 @@ Since the app is entirely client-side, setup is instant.
 
 1. **Clone the repo**:
    ```bash
-   git clone https://github.com/your-username/rent-manager.git
+   git clone https://github.com/jrfarkade/rent-manager.git
    cd rent-manager
    ```
 
