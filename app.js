@@ -25,52 +25,26 @@
     <div class="login-wrapper">
       <!-- LEFT PANEL: BRAND & GRAPHIC -->
       <div class="login-brand-side">
-        <div class="login-logo-container">
-          <svg class="brand-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-            <polyline points="9 22 9 12 15 12 15 22"/>
-          </svg>
-          <div class="brand-meta">
-            <span class="brand-title">RentManage</span>
-            <span class="brand-subtitle">Smart Rental Management System</span>
-          </div>
-        </div>
-
-        <div class="login-brand-desc">
-          <h1>Welcome <span class="text-highlight-blue">Back!</span></h1>
-          <p>Please login to continue to your account</p>
-        </div>
-
-        <div class="login-illustration">
-          <div class="building-card">
-            <!-- Modern flat-vector abstract apartment building -->
-            <svg viewBox="0 0 100 120" class="building-svg">
-              <rect x="15" y="10" width="70" height="110" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
-              <!-- Structural columns -->
-              <rect x="25" y="20" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
-              <rect x="44" y="20" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
-              <rect x="63" y="20" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
-
-              <rect x="25" y="45" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
-              <rect x="44" y="45" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
-              <rect x="63" y="45" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
-
-              <rect x="25" y="70" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
-              <rect x="44" y="70" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
-              <rect x="63" y="70" width="12" height="18" rx="2" fill="#3b82f6" opacity="0.8"/>
-
-              <!-- Doorway -->
-              <rect x="40" y="98" width="20" height="22" rx="2" fill="#1e293b"/>
+        <!-- Hero Background Image -->
+        <img src="login_hero.png" alt="Modern Apartments Hero" class="login-hero-img">
+        <!-- Dark overlay to ensure text readability -->
+        <div class="login-hero-overlay"></div>
+        
+        <div class="login-brand-content">
+          <div class="login-logo-container">
+            <svg class="brand-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
             </svg>
-            <div class="illustration-badge">
-              <div class="badge-icon-bg">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              </div>
-              <div class="badge-text-details">
-                <strong>Secure • Simple • Smart</strong>
-                <span>Managing your property, made easy.</span>
-              </div>
+            <div class="brand-meta">
+              <span class="brand-title">RentManage</span>
+              <span class="brand-subtitle">Smart Rental Management System</span>
             </div>
+          </div>
+
+          <div class="login-brand-desc">
+            <h1>Welcome <span class="text-highlight-blue">Back!</span></h1>
+            <p>Please login to continue to your account</p>
           </div>
         </div>
       </div>
@@ -1139,16 +1113,6 @@
       // 3. Render Login Cards View by default
       this.renderLogin();
 
-      // 4. Bind global handlers
-      window.addEventListener('click', (e) => {
-        // Close theme dropdown when clicking outside
-        const menu = document.getElementById('uiSwitcherMenu');
-        const btn = document.getElementById('uiSwitcherBtn');
-        if (menu && menu.classList.contains('active') && !menu.contains(e.target) && !btn.contains(e.target)) {
-          menu.classList.remove('active');
-        }
-      });
-      
       // 5. Restore user session if present
       const savedSession = sessionStorage.getItem('rentmanager_session');
       if (savedSession) {
@@ -1233,40 +1197,44 @@
 
     // --- THEME SWITCHER ---
     initThemeSwitcher() {
-      const switcherBtn = document.getElementById('uiSwitcherBtn');
-      const switcherMenu = document.getElementById('uiSwitcherMenu');
-      const options = document.querySelectorAll('.ui-switcher-option');
-
-      const savedTheme = localStorage.getItem('rentmanager_theme') || 'saas';
+      const savedTheme = localStorage.getItem('rentmanager_theme') || 'light';
       this.setTheme(savedTheme);
+      
+      const switcherBtn = document.getElementById('uiSwitcherBtn');
+      if (switcherBtn) {
+        switcherBtn.onclick = () => this.toggleTheme();
+      }
+    }
 
-      switcherBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        switcherMenu.classList.toggle('active');
-      });
-
-      options.forEach(opt => {
-        opt.addEventListener('click', () => {
-          const selectedTheme = opt.getAttribute('data-theme');
-          this.setTheme(selectedTheme);
-          switcherMenu.classList.remove('active');
-          this.showToast('Theme Changed', `Switched UI style to ${opt.querySelector('strong').innerText}`, 'info');
-        });
-      });
+    toggleTheme() {
+      const currentTheme = localStorage.getItem('rentmanager_theme') || 'light';
+      const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+      this.setTheme(nextTheme);
+      this.showToast('Theme Changed', `Switched UI style to ${nextTheme === 'light' ? 'Light Mode' : 'Dark Mode'}`, 'info');
     }
 
     setTheme(themeName) {
+      if (themeName === 'saas' || themeName === 'cards') {
+        themeName = 'light';
+      }
       document.body.className = `theme-${themeName}`;
       localStorage.setItem('rentmanager_theme', themeName);
       
-      const options = document.querySelectorAll('.ui-switcher-option');
-      options.forEach(opt => {
-        if (opt.getAttribute('data-theme') === themeName) {
-          opt.classList.add('active');
+      const sunIcon = document.getElementById('theme-icon-sun');
+      const moonIcon = document.getElementById('theme-icon-moon');
+      const textSpan = document.getElementById('uiSwitcherText');
+      
+      if (sunIcon && moonIcon) {
+        if (themeName === 'light') {
+          sunIcon.style.display = 'none';
+          moonIcon.style.display = 'inline-block';
+          if (textSpan) textSpan.innerText = 'Dark Mode';
         } else {
-          opt.classList.remove('active');
+          sunIcon.style.display = 'inline-block';
+          moonIcon.style.display = 'none';
+          if (textSpan) textSpan.innerText = 'Light Mode';
         }
-      });
+      }
     }
 
     // --- LOGIN RENDER & INTERFACE HANDLERS ---
@@ -2036,6 +2004,12 @@
       const cost = parseFloat(document.getElementById('room-elec-cost').value);
       const deposit = parseInt(document.getElementById('room-deposit').value) || 0;
 
+      const roomNumRegex = /^\d+$/;
+      if (!roomNumRegex.test(num)) {
+        this.showToast('Validation Error', 'Room Number must contain only numbers.', 'error');
+        return;
+      }
+
       const owner = this.currentUser;
       const exists = this.db.rooms.find(r => r.ownerId === owner.id && r.roomNumber.toLowerCase() === num.toLowerCase());
       if (exists) {
@@ -2146,9 +2120,23 @@
       const idx = this.db.rooms.findIndex(r => r.id === id);
       if (idx === -1) return;
 
+      const num = document.getElementById('edit-room-num').value.trim();
+      const roomNumRegex = /^\d+$/;
+      if (!roomNumRegex.test(num)) {
+        this.showToast('Validation Error', 'Room Number must contain only numbers.', 'error');
+        return;
+      }
+
+      const ownerId = this.db.rooms[idx].ownerId;
+      const exists = this.db.rooms.find(r => r.ownerId === ownerId && r.id !== id && r.roomNumber.toLowerCase() === num.toLowerCase());
+      if (exists) {
+        this.showToast('Edit Error', `Room ${num} already exists.`, 'error');
+        return;
+      }
+
       const updated = {
         ...this.db.rooms[idx],
-        roomNumber: document.getElementById('edit-room-num').value.trim(),
+        roomNumber: num,
         monthlyRent: parseInt(document.getElementById('edit-room-rent').value),
         tenantName: document.getElementById('edit-room-tenant').value.trim(),
         joiningDate: document.getElementById('edit-room-join').value,

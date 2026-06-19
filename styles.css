@@ -12,8 +12,8 @@
   --header-height: 70px;
 }
 
-/* --- THEME A: SAAS DASHBOARD (Default Professional Hues) --- */
-body.theme-saas {
+/* --- THEME A: LIGHT DASHBOARD (Default Professional Hues) --- */
+body.theme-light {
   --color-primary: #2563eb;          /* Accent blue */
   --color-primary-hover: #1d4ed8;
   --color-primary-tint: #eff6ff;
@@ -38,33 +38,7 @@ body.theme-saas {
   --text-gradient: linear-gradient(135deg, #1e3a8a, #3b82f6);
 }
 
-/* --- THEME B: MODERN CARD-BASED UI --- */
-body.theme-cards {
-  --color-primary: #7c3aed;          /* Purple accent */
-  --color-primary-hover: #6d28d9;
-  --color-primary-tint: #f5f3ff;
-  --color-bg-page: #f1f5f9;          /* Light grayish slate */
-  --color-bg-sidebar: #ffffff;       /* Pure white sidebar */
-  --color-bg-card: #ffffff;
-  --color-bg-input: #f8fafc;
-  --color-text-main: #1e293b;
-  --color-text-muted: #475569;
-  --color-border: #cbd5e1;
-  --color-success: #059669;
-  --color-success-bg: #ecfdf5;
-  --color-danger: #dc2626;
-  --color-danger-bg: #fef2f2;
-  --color-warning: #d97706;
-  --color-warning-bg: #fffbeb;
-
-  --card-radius: 24px;               /* Playfully rounded border radius */
-  --card-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.03);
-  --card-border: 1px solid rgba(0,0,0,0.05);
-  --header-bg: #ffffff;
-  --text-gradient: linear-gradient(135deg, #4f46e5, #7c3aed);
-}
-
-/* --- THEME C: MINIMAL DARK UI --- */
+/* --- THEME B: MINIMAL DARK UI --- */
 body.theme-dark {
   --color-primary: #06b6d4;          /* Cyan accent */
   --color-primary-hover: #0891b2;
@@ -83,7 +57,7 @@ body.theme-dark {
   --color-warning: #fbbf24;
   --color-warning-bg: rgba(251, 191, 36, 0.15);
 
-  --card-radius: 16px;
+  --card-radius: 12px;               /* Identical to light theme to prevent layout shifting */
   --card-shadow: 0 4px 30px rgba(0,0,0,0.4);
   --card-border: 1px solid var(--color-border);
   --header-bg: rgba(15, 23, 42, 0.85);
@@ -104,9 +78,32 @@ body {
   background-color: var(--color-bg-page);
   color: var(--color-text-main);
   line-height: 1.5;
-  transition: background-color 0.4s ease, color 0.4s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+/* Smooth transition styles for theme toggling */
+.login-brand-side,
+.login-form-side,
+.role-card,
+.credentials-card,
+.role-selector-card,
+.dashboard-sidebar,
+.dashboard-header,
+.topbar,
+.stat-card,
+.dashboard-card,
+.reading-box,
+.charges-summary-bar,
+.data-table td,
+.data-table th,
+.nav-item,
+input,
+select,
+textarea,
+button {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -324,19 +321,47 @@ input:disabled, .bg-disabled {
 /* Left Brand Sidebar Panel */
 .login-brand-side {
   flex: 1.1;
-  background: radial-gradient(circle at 10% 20%, rgba(219, 234, 254, 0.3) 0%, rgba(248, 250, 252, 0.5) 90%);
   border-right: 1px solid var(--color-border);
   padding: 60px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 body.theme-dark .login-brand-side {
-  background: radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.05) 0%, rgba(15, 23, 42, 0.85) 90%);
   border-color: rgba(255, 255, 255, 0.08);
+}
+
+.login-hero-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.login-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(15, 23, 42, 0.45) 100%);
+  z-index: 2;
+}
+
+.login-brand-content {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #ffffff;
 }
 
 .login-logo-container {
@@ -348,7 +373,7 @@ body.theme-dark .login-brand-side {
 .brand-logo-icon {
   width: 38px;
   height: 38px;
-  color: var(--color-primary);
+  color: #38bdf8;
 }
 
 .brand-meta {
@@ -361,14 +386,14 @@ body.theme-dark .login-brand-side {
   font-weight: 800;
   font-size: 1.5rem;
   line-height: 1.1;
-  color: var(--color-text-main);
+  color: #ffffff;
 }
 
 .brand-subtitle {
   font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: rgba(255, 255, 255, 0.75);
   letter-spacing: 0.05em;
   margin-top: 1px;
 }
@@ -377,65 +402,20 @@ body.theme-dark .login-brand-side {
   font-size: 2.8rem;
   font-family: var(--font-display);
   font-weight: 800;
-  color: var(--color-text-main);
+  color: #ffffff;
   line-height: 1.15;
   margin-bottom: 6px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .text-highlight-blue {
-  color: var(--color-primary);
+  color: #38bdf8;
 }
 
 .login-brand-desc p {
   font-size: 1.05rem;
-  color: var(--color-text-muted);
+  color: rgba(255, 255, 255, 0.85);
   font-weight: 500;
-}
-
-.login-illustration {
-  margin-top: 40px;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.building-card {
-  background-color: var(--color-bg-card);
-  border: var(--card-border);
-  box-shadow: var(--card-shadow);
-  border-radius: 20px;
-  padding: 30px;
-  width: 320px;
-  position: relative;
-  transition: var(--transition-normal);
-}
-
-body.theme-saas .building-card {
-  border: 1px solid var(--color-border);
-}
-
-.building-svg {
-  width: 100%;
-  height: 200px;
-}
-
-.illustration-badge {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  right: 12px;
-  background-color: var(--color-bg-card);
-  border: var(--card-border);
-  border-radius: 12px;
-  padding: 10px 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-}
-
-body.theme-dark .illustration-badge {
-  background-color: #1e293b;
-  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .badge-icon-bg {
@@ -1139,10 +1119,7 @@ body.theme-dark .data-table th {
   flex-shrink: 0;
   transition: var(--transition-normal);
   z-index: 200;
-}
-
-body.theme-saas .dashboard-sidebar {
-  color: rgba(255,255,255,0.75);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .sidebar-brand {
@@ -1151,15 +1128,11 @@ body.theme-saas .dashboard-sidebar {
   display: flex;
   align-items: center;
   gap: 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-body.theme-saas .sidebar-brand {
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-body.theme-saas .dashboard-sidebar .brand-title { color: #ffffff; }
-body.theme-saas .dashboard-sidebar .brand-subtitle { color: rgba(255,255,255,0.5); }
+.dashboard-sidebar .brand-title { color: #ffffff; }
+.dashboard-sidebar .brand-subtitle { color: rgba(255, 255, 255, 0.5); }
 
 .sidebar-nav {
   padding: 24px 16px;
@@ -1177,22 +1150,13 @@ body.theme-saas .dashboard-sidebar .brand-subtitle { color: rgba(255,255,255,0.5
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 500;
-  color: var(--color-text-muted);
-}
-
-body.theme-saas .nav-item {
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .nav-item:hover {
-  background-color: var(--color-primary-tint);
-  color: var(--color-primary);
-  text-decoration: none;
-}
-
-body.theme-saas .nav-item:hover {
-  background-color: rgba(255,255,255,0.08);
+  background-color: rgba(255, 255, 255, 0.08);
   color: #ffffff;
+  text-decoration: none;
 }
 
 .nav-item.active {
@@ -1202,45 +1166,29 @@ body.theme-saas .nav-item:hover {
 
 .sidebar-footer {
   padding: 20px;
-  border-top: 1px solid var(--color-border);
-}
-
-body.theme-saas .sidebar-footer {
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .need-help-card {
-  background-color: var(--color-bg-page);
+  background-color: #1e293b;
   border-radius: 12px;
   padding: 16px;
-  border: 1px solid var(--color-border);
-}
-
-body.theme-saas .need-help-card {
-  background-color: #1e293b;
   border: 1px solid #334155;
   color: #ffffff;
 }
 
 .need-help-card h4 { font-size: 0.9rem; margin-bottom: 4px; }
-.need-help-card p { font-size: 0.75rem; color: var(--color-text-muted); margin-bottom: 12px; }
-body.theme-saas .need-help-card p { color: rgba(255,255,255,0.6); }
+.need-help-card p { font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 12px; }
 
 .btn-outline-small {
-  border: 1px solid var(--color-border);
+  border: 1px solid #334155;
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--color-text-main);
-  background: var(--color-bg-card);
-  transition: var(--transition-fast);
-}
-
-body.theme-saas .btn-outline-small {
-  border-color: #334155;
-  background-color: transparent;
   color: #ffffff;
+  background-color: transparent;
+  transition: var(--transition-fast);
 }
 
 .btn-outline-small:hover {
@@ -1642,11 +1590,11 @@ body.theme-saas .btn-outline-small {
     flex-direction: column;
   }
   .login-brand-side {
-    padding: 30px;
+    padding: 40px 30px;
     flex: none;
+    min-height: 250px;
   }
   .login-brand-desc h1 { font-size: 2rem; }
-  .login-illustration { display: none; }
   .login-form-side { padding: 30px; }
 }
 
