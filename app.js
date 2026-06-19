@@ -2270,3 +2270,4 @@
   window.app = new RentManagerApp();
 
 })();
+ 

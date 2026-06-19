@@ -76,3 +76,4 @@ Since the app is entirely client-side, setup is instant.
 ---
 
 *Designed and engineered as a personal frontend portfolio project.*
+ 
